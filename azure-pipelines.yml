@@ -6,33 +6,43 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: UbuntuScriptsInlineCheck
+  jobs:
+  - job: InlineScripts
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: none
+    - script: echo Hello, world!
+      displayName: 'Run a one-line script'
 
-jobs:
-- job: InlineScripts
-  steps:
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script'
+    - script: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+      displayName: 'Run a multi-line script'
 
-  - script: |
-      echo Add other tasks to build, test, and deploy your project.
-      echo See https://aka.ms/yaml
-    displayName: 'Run a multi-line script'
+- stage: UbuntuScriptsInlineCheck
+  jobs:
+  - job: ExternalScripts
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Bash@3
+        displayName: 'install bc'
+        inputs:
+          targetType: 'inline'
+          script: |
+            # Write your commands here
+            
+            echo 'installation starts'
+            sudo apt-get install bc
+            echo 'installation ends'
 
-- job: ExternalScripts
-  steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          
-          echo 'installation starts'
-          sudo apt-get install bc
-          echo 'installation ends'
-
-    - task: Bash@3
-      inputs:
-        filePath: 'calc.sh'
+      - task: Bash@3
+        displayName: 'run calc'
+        inputs:
+          filePath: 'calc.sh'
         
+  dependsOn: Build
+  condition: succeeded()
