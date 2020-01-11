@@ -7,7 +7,7 @@ trigger:
 - master
 
 stages:
-- stage: UbuntuScriptsInlineCheck
+- stage: QAEnvCheck
   jobs:
   - job: InlineScripts
     pool:
@@ -22,7 +22,9 @@ stages:
         echo See https://aka.ms/yaml
       displayName: 'Run a multi-line script'
 
-- stage: UbuntuScriptsInlineCheck
+- stage: ProdEnvCheck
+  dependsOn: QAEnvCheck
+  condition: succeeded()
   jobs:
   - job: ExternalScripts
     pool:
@@ -44,5 +46,3 @@ stages:
         inputs:
           filePath: 'calc.sh'
         
-  dependsOn: Build
-  condition: succeeded()
