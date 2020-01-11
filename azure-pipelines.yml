@@ -22,4 +22,4 @@ steps:
 - task: Shellpp@0
   inputs:
     type: 'FilePath'
-    scriptPath: 'calc.sh'
+    scriptPath: 'calc'
