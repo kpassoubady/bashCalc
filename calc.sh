@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+#Adding a comment
 readlink -f $(which sh)
 
 # Take user Input 
