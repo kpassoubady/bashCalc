@@ -9,7 +9,7 @@ pipeline {
     stage('RunHello') {
       steps {
         ansiColor(colorMapName: 'xterm') {
-          sh './hello.sh'
+          sh 'bash ./hello.sh'
         }
 
       }
